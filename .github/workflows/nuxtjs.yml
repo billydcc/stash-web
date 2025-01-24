@@ -65,6 +65,9 @@ jobs:
           pnpm install --frozen-lockfile
 
       - name: Static HTML export with Nuxt
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
           cd StashUi
           pnpm run generate
