@@ -43,7 +43,7 @@ jobs:
         with:
           # Adjust the path to the *build output folder* inside Ui/StashUi
           # e.g., "dist" for Vue CLI or ".output/public" for Nuxt 3
-          path: Ui/StashUi/.output/public
+          path: StashUi/.output/public
 
       - name: Deploy to GitHub Pages
         id: deployment
