@@ -27,6 +27,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: github-pages
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -65,9 +70,6 @@ jobs:
           pnpm install --frozen-lockfile
 
       - name: Static HTML export with Nuxt
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
           cd StashUi
           pnpm run generate
