@@ -2,6 +2,8 @@
 
 import type { Database } from '~/database.types';
 
+import type { Location } from '~/api/models';
+
 const user = useSupabaseUser();
 const client = useSupabaseClient<Database>();
 const locationName = ref('');
@@ -27,26 +29,35 @@ async function createLocation() {
     return;
   }
 
-  await getLocations();
+  await fetchLocationData();
 
   locationName.value = '';
 }
 
-const locations = ref<any[]>([]);
+const locations = ref<Location[]>([]);
 
+const session = useSupabaseSession();
+const token = session?.value?.access_token;
+const config = useRuntimeConfig()
 
-async function getLocations() {
-  const { data, error } = await client.from('Location').select('*');
-
-  if (error) {
-    console.error('Error fetching locations:', error);
-    return;
+// Fetch locations from the API.
+async function fetchLocationData() {
+  const { data, error } = await useFetch<Location[]>(`${config.public.apiBase}/location`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  if (data.value) {
+    locations.value = data.value;
   }
-
-  locations.value = data || [];
+  else {
+    alert(error.value)
+  }
 }
 
-getLocations();
+fetchLocationData();
 
 const setPassword = async () => {
   const { error } = await client.auth.updateUser({

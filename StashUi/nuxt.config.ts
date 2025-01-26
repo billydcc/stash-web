@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: process.env.API_BASE_URL || 'http://localhost:80',
+      apiBase: process.env.API_BASE_URL,
       public: {
         supabaseUrl: process.env.SUPABASE_URL || '',
         supabaseAnonKey: process.env.SUPABASE_KEY || ''
